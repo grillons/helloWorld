@@ -2,7 +2,11 @@
 
 {% block body %}
   {{ form_start(form_content) }}
-  {{ form_row(form_content.name) }}
+  <div>
+    {{ form_label(form_content.name) }}
+    {{ form_errors(form_content.name) }}
+    {{ form_widget(form_content.name) }}
+  </div>
   {{ form_row(form_content.releaseOn) }}
   {{ form_end(form_content) }}
 {% endblock %}
