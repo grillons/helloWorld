@@ -22,4 +22,15 @@ class HelloWorldController extends AbstractController
             'name'            => $name
         ]);
     }
+    /**
+    * @Route("/helloo/", name="helloo")
+    */
+    public function helloAction()
+    {
+        return $this->render('hello_world/hello.html.twig', [
+            'function'        => 'helloAction()'
+        ]);
+    }
+
+
 }

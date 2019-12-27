@@ -2,6 +2,14 @@
 
 {% block title %}Hello HelloWorldController!{% endblock %}
 
+{% block menu %}
+<ul>
+<li><a href="{{ path('hello_world') }}">Hello</a></li>
+<li><a href="{{ path('helloo') }}">Helloo</a></li>
+<li><a href="{{ path('app_home') }}">App home</a></li>
+</ul>
+{% endblock %}
+
 {% block body %}
 <style>
     .example-wrapper { margin: 1em auto; max-width: 800px; width: 95%; font: 18px/1.5 sans-serif; }
