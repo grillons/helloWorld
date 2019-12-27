@@ -12,8 +12,9 @@ class MainController extends AbstractController
      */
     public function homeAction()
     {
-        return $this->render('main/index.html.twig', [
-            'controller_name' => 'MainController',
-        ]);
+        // return $this->render('main/index.html.twig');
+        return $this->render('main/home.html.twig',
+          ['project_name' => 'Share and Fly'],
+        );
     }
 }
