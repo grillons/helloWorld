@@ -35,9 +35,16 @@ class ProductController extends AbstractController
         ->add("save", SubmitType::class, ["label" => "create Product"])
         ->getForm();
 
+      $result = [];
+      $form->handleRequest($request);
+      if ($form->isSubmitted() && $form->isValid()) {
+        $result = $form->getData();
+      }
+
       return $this->render('product/add.html.twig', [
          'controller_name' => 'ProductController',
-         'form_content'    => $form->createView()
+         'form_content'    => $form->createView(),
+         'result'          => $result,
       ]);
     }
 }
