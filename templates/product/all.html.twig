@@ -13,7 +13,7 @@
                 <td>{{ product.name }}</td>
                 <td>{{ product.releaseOn|date }}</td>
                 <td>
-                    <a onclick="return confirm('Are you sure?');" href="{{ url("product.delete", {"product":product.id}) }}">Delete</a>
+                    <a onclick="return confirm('Are you sure?');" href="{{ url("product.delete", {"product_id":product.id}) }}">Delete</a>
                 </td>
             </tr>
         {% else %}

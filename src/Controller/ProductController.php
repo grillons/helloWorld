@@ -2,7 +2,6 @@
 
 namespace App\Controller;
 
-use App\Entity\Task;
 use App\Entity\Product;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Routing\Annotation\Route;
@@ -36,7 +35,7 @@ class ProductController extends AbstractController
     }
 
     /**
-     * @Route("/product/show/{product}", name="product.show")
+     * @Route("/product/show/{product_id}", name="product.show")
      */
     public function show(Product $product)
     {
@@ -45,11 +44,13 @@ class ProductController extends AbstractController
     }
 
     /**
-     * @Route("/product/add", name="product.add")
+     * @Route("/product/add/", name="product.add")
      */
-    public function add(Product $product)
+    public function add(Request $request)
     {
-      $form = $this->createFormBuilder()
+      $product = new Product();
+
+      $form = $this->createFormBuilder($product)
         ->add("name", TextType::class)
         ->add("releaseOn", DateType::class, [
                 "widget" => "single_text"
@@ -57,24 +58,23 @@ class ProductController extends AbstractController
         ->add("save", SubmitType::class, ["label" => "create Product"])
         ->getForm();
 
-      // $result = [];
-      $form->handleRequest($product);
+      $form->handleRequest($request);
       if ($form->isSubmitted() && $form->isValid()) {
-        $em = $this->getDoctrine()->getManager();
+        $entityManager = $this->getDoctrine()->getManager(); // Fetch the EntityManager via $this->getDoctrine()
+        $entityManager->persist($product); // Tell Doctrine you want to (eventually) save the Product (no queries yet)
+        $entityManager->flush(); // Actually executes the queries (i.e. the INSERT query)
 
-        $em->persist($product);
-        $em->flush();
         return $this->redirectToRoute("product.all");
+        // return new Response('Saved new product with id '.$product->getId());
       }
 
       return $this->render('product/add.html.twig', [
          'form_content'    => $form->createView(),
       ]);
-      // return ['form_content' => $form->createView()];
     }
 
     /**
-     * @Route("/product/update/{product}", name="product.update")
+     * @Route("/product/update/{product_id}", name="product.update")
      */
     public function update(Product $product)
     {
@@ -83,7 +83,7 @@ class ProductController extends AbstractController
     }
 
     /**
-     * @Route("/product/delete/{product}", name="product.delete")
+     * @Route("/product/delete/{product_id}", name="product.delete")
      */
     public function delete(Product $product)
     {
