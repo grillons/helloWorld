@@ -1,5 +1,18 @@
 {% extends 'base.html.twig' %}
 
 {% block body %}
+  {% form_theme form_content 'bootstrap_4_layout.html.twig' %}
 
+  {{ form_start(form_content) }}
+    <div>
+      {{ form_label(form_content.name) }}
+      {{ form_errors(form_content.name) }}
+      {{ form_widget(form_content.name) }}
+    </div>
+    {{ form_row(form_content.releaseOn) }}
+  {{ form_end(form_content) }}
+
+  <p>
+    <a href="{{ url("product.all") }}">Back to all products</a>
+  </p>
 {% endblock %}

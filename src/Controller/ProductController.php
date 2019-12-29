@@ -35,12 +35,11 @@ class ProductController extends AbstractController
     }
 
     /**
-     * @Route("/product/show/{product_id}", name="product.show")
+     * @Route("/product/show/{product}", name="product.show")
      */
     public function show(Product $product)
     {
-      return $this->render('product/show.html.twig', [
-      ]);
+      return $this->render('product/show.html.twig', ['product' => $product]);
     }
 
     /**
@@ -74,16 +73,37 @@ class ProductController extends AbstractController
     }
 
     /**
-     * @Route("/product/update/{product_id}", name="product.update")
+     * @Route("/product/update/{product}", name="product.update")
      */
-    public function update(Product $product)
+    public function update(Request $request, Product $product)
     {
+      $form = $this->createFormBuilder($product)
+        ->add("name", TextType::class)
+        ->add("releaseOn", DateType::class, [
+                "widget" => "single_text"
+              ])
+        ->add("save", SubmitType::class, ["label" => "update Product"])
+        ->getForm();
+
+      $form->handleRequest($request);
+      if ($form->isSubmitted() && $form->isValid()) {
+        $product = $form->getData();
+
+        $entityManager = $this->getDoctrine()->getManager(); // Fetch the EntityManager via $this->getDoctrine()
+        $entityManager->persist($product); // Tell Doctrine you want to (eventually) save the Product (no queries yet)
+        $entityManager->flush(); // Actually executes the queries (i.e. the INSERT query)
+      }
+
       return $this->render('product/update.html.twig', [
+        'form_content'    => $form->createView(),
+      ]);
+      return $this->redirectToRoute('product.update', [
+          'id' => $product->getId(),
       ]);
     }
 
     /**
-     * @Route("/product/delete/{product_id}", name="product.delete")
+     * @Route("/product/delete/{product}", name="product.delete")
      */
     public function delete(Product $product)
     {
