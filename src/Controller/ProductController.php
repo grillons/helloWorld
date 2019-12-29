@@ -92,13 +92,12 @@ class ProductController extends AbstractController
         $entityManager = $this->getDoctrine()->getManager(); // Fetch the EntityManager via $this->getDoctrine()
         $entityManager->persist($product); // Tell Doctrine you want to (eventually) save the Product (no queries yet)
         $entityManager->flush(); // Actually executes the queries (i.e. the INSERT query)
+
+        return $this->redirectToRoute('product.all');
       }
 
       return $this->render('product/update.html.twig', [
         'form_content'    => $form->createView(),
-      ]);
-      return $this->redirectToRoute('product.update', [
-          'id' => $product->getId(),
       ]);
     }
 
